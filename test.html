@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <script type="text/javascript" src="js/test7.js"></script>
+    <script type="text/javascript" src="test.js"></script>
     <title>test</title>
     <style type="text/css" media="screen">
       <!--
@@ -44,15 +44,15 @@
   <body onload="javascript:init()">
     
     <div id="map">
-      <canvas id="canvas" width="255" height="255" >
+      <canvas id="canvas" width="256" height="256" >
         This demo uses the HTML canvas object. You'll need a browser such as Firefox 2 or Safari to use the demo.
       </canvas>
 
-    <canvas id="binary" width="255" height="255" >
+    <canvas id="binary" width="256" height="256" >
         This demo uses the HTML canvas object. You'll need a browser such as Firefox 2 or Safari to use the demo.
       </canvas>
 
-    <canvas id="distance" width="255" height="255" >
+    <canvas id="distance" width="256" height="256" >
         This demo uses the HTML canvas object. You'll need a browser such as Firefox 2 or Safari to use the demo.
       </canvas>
 
@@ -79,33 +79,7 @@
 
 	</div>
 
-      <div id="legend">
-        <label for="legend-pixels">Scan every </label>
-        <select id="legend-pixels">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-          <option>10</option>
-        </select>
-        <label for="legend-pixels"> pixels</label>
-        <input type="button" value="Go" onclick="javascript:scanMap()"></input>
-        <div id="images"></div>
-      </div>
-    </div>
-
-    
-
-    
-
       
-
-    </div>
 
   </body>
 </html>
