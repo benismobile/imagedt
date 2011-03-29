@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="./test.js"></script>
+    <title>test</title>
+    <style type="text/css" media="screen">
+      <!--
+          #map {
+              float: left;
+          }
+
+          #results {
+              float: left;
+              margin-left: 10px;
+              margin-top: 10px;
+              padding: 10px;
+              }
+
+          .best-hit {
+              border: red 1px solid;
+          }
+
+          #symbols {
+              padding: 10px;
+          }
+
+          #values-table td {
+              padding-right: 6px;
+              padding-left: 6px;
+          }
+          #legend {
+              padding: 10px;
+          }
+          img {
+              padding: 3px;
+          }
+
+        -->
+    </style>
+  </head>
+
+  <body onload="javascript:init()">
+    
+    <div id="map">
+      <canvas id="canvas" width="256" height="256" >
+        This demo uses the HTML canvas object. You'll need a browser such as Firefox 2 or Safari to use the demo.
+      </canvas>
+
+    <canvas id="binary" width="256" height="256" >
+        This demo uses the HTML canvas object. You'll need a browser such as Firefox 2 or Safari to use the demo.
+      </canvas>
+
+    <canvas id="distance" width="256" height="256" >
+        This demo uses the HTML canvas object. You'll need a browser such as Firefox 2 or Safari to use the demo.
+      </canvas>
+
+      <div id="symbols">
+        <canvas id="canvas2" width="20" height="20" ></canvas>
+        <canvas id="canvas3" width="20" height="20" ></canvas>
+        <canvas id="canvas4" width="20" height="20" ></canvas>
+        <canvas id="canvas5" width="20" height="20" ></canvas>
+        <canvas id="canvas6" width="20" height="20" ></canvas>
+        <canvas id="canvas7" width="20" height="20" ></canvas>
+        <canvas id="canvas8" width="20" height="20" ></canvas>
+        <canvas id="canvas9" width="20" height="20" ></canvas>
+      </div>
+      
+      <div id="view-points">
+        <canvas id="canvas-current" width="20" height="20" style="border:1px solid blue"></canvas>
+        <canvas id="canvas-gs" width="20" height="20" ></canvas>
+      </div>
+
+	<div id="pixelinfo">
+	 <h6 id="R">red</h6>	
+	 <h6 id="G">green</h6>	
+	 <h6 id="B">blue</h6>	
+
+	</div>
+
+      
+
+  </body>
+</html>
