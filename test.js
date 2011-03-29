@@ -12,24 +12,26 @@ function Coords(x, y)
     this.y = y;
 }
 
+
 var house         = new Symbol("Historic house",           "strategi_ti_hist-house.png");
-var airport       = new Symbol("Airport with customs",     "airport.png");
+var garden       = new Symbol("Garden",     "strategi_ti_garden.png");
 var info          = new Symbol("Information centre",       "strategi_ti_info-c.png");
-var dualCway      = new Symbol("Dual carriageway",         "dual_carriageway.png");
-var dualJunc      = new Symbol("Multi-level junction",     "motorway_junction.png");
+var golf      = new Symbol("Golf course",         "strategi_ti_golf.png");
+var caravan      = new Symbol("Caravan",     "strategi_ti_caravan.png");
 var star          = new Symbol("Other tourist attraction", "strategi_ti_other_tourist.png");
 var parking       = new Symbol("Park and ride",            "strategi_ti_PnR.png");
 var info_seasonal = new Symbol("Information centre(s)",    "strategi_ti_info-c_sznl.png");
 
 var symbolMap = new Array();
 symbolMap[house.name]          = house;
-symbolMap[airport.name]        = airport;
+symbolMap[garden.name]        = garden;
 symbolMap[info.name]           = info;
-symbolMap[dualCway.name]       = dualCway;
-symbolMap[dualJunc.name]       = dualJunc;
+symbolMap[golf.name]       = golf;
+symbolMap[caravan.name]       = caravan;
 symbolMap[star.name]           = star;
 symbolMap[parking.name]        = parking;
 symbolMap[info_seasonal.name]  = info_seasonal;
+
 
 var diffs = null;
 var currentContext = null;
@@ -51,10 +53,10 @@ function init()
     try{canvasContext.drawImage(img, 0, 0);}catch(error){alert(error.msg) ; }
 
     // cache symbols
-    // cacheSymbols(1);
+     cacheSymbols(1);
    
     // current selection viewers
-//    currentContext =     document.getElementById("canvas-current").getContext("2d");
+    currentContext =     document.getElementById("canvas-current").getContext("2d");
 
   //  canvas.onmousemove = function(e)
 //    {
@@ -87,10 +89,76 @@ function cacheSymbol(symbol, canvasId, draw)
         var img = new Image();
         img.src = symbol.image;
         context.drawImage(img, 0, 0);
+        canvas.onmousemove = function(e)
+        {
+           findSymbol(canvas);
+        };
+        
     }
     
+     
+}
+
+
+function blueToBinary(colourCanvas, binaryCanvas)
+{
+
+      var binaryContext = binaryCanvas.getContext("2d");
+
+      var dataitems = ((colurCanvas.width*4) * colourCanvas.height) ;
+
+      var context = searchCanvas.getContext("2d") ;
+      
+      var canvasdata =  context.getImageData(0,
+                                0,
+                                colurCanvas.height, colurCanvas.width);
+
+
+      for(var pix = 0; pix < dataitems -1 ; pix = pix + 4)
+      {
+        
+    	var r = canvasdata.data[pix] ;
+		var g = canvasdata.data[pix+1] ;
+		var b = canvasdata.data[pix+2] ;
+		red = 81 ;
+		green = 169 ;
+		blue = 220 ;		
+		var error = 85 ;
+
+		if( (red < r-error || red > r+error ||
+		    green < g-error || green > g+error || 
+		   blue < b-error || blue > b+error ) )
+		{
+			 canvasdata.data[pix] = 255 ;
+			 canvasdata.data[pix+1] = 255 ;
+			canvasdata.data[pix+2] = 255 ;	
+					 
+		}
+		else
+		{
+			canvasdata.data[pix] = 0 ;
+			canvasdata.data[pix+1] = 0 ;
+			canvasdata.data[pix+2] = 0 ;	
+
+		}
+	} 
+
+
+
+	 binaryContext.putImageData(canvasdata, 0, 0);
+
+
+}
+
+function findSymbol(symbolCanvas)
+{
     
-  
+      var searchCanvas = document.getElementById("canvas");
+      var binaryCanvas = document.getElementById("binary") ;
+      blueToBinary(searchCanvas, binaryCanvas) ;
+      
+	 
+
 }
 
 // calculate which symbol the mouse is currently hovering over
