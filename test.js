@@ -111,7 +111,7 @@ function blueToBinary(colourCanvas, binaryCanvas)
       
       var canvasdata =  context.getImageData(0,
                                 0,
-                                colurCanvas.height, colurCanvas.width);
+                                colourCanvas.height, colourCanvas.width);
 
 
       for(var pix = 0; pix < dataitems -1 ; pix = pix + 4)
