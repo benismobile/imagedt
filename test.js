@@ -105,7 +105,7 @@ function blueToBinary(colourCanvas, binaryCanvas)
 
       var binaryContext = binaryCanvas.getContext("2d");
 
-      var dataitems = ((colurCanvas.width*4) * colourCanvas.height) ;
+      var dataitems = ((colourCanvas.width*4) * colourCanvas.height) ;
 
       var context = searchCanvas.getContext("2d") ;
       
