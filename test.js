@@ -169,12 +169,10 @@ function findSymbol(symbolCanvas)
 function visualizeDistanceTransform(dT, distanceCanvas)
 {
     
-   var canvasdata =  context.getImageData(0,
-                                0,
-                                canvas.height, canvas.width);
-
+       
+   
     var distanceContext = distanceCanvas.getContext("2d") ;
-    var canvasData = context.createImageData(256, 256);
+    var canvasData = distanceContext.createImageData(256, 256);
 
 	var pix = 0 ;
 
