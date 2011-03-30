@@ -104,6 +104,7 @@ function blueToBinary(colourCanvas, binaryCanvas)
 {
 
       var binaryContext = binaryCanvas.getContext("2d");
+      binaryContext.scale(0.4, 0.4) ;
 
       var dataitems = ((colourCanvas.width*4) * colourCanvas.height) ;
 
@@ -173,7 +174,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
  
     var distanceContext = distanceCanvas.getContext("2d") ;
     var context = searchCanvas.getContext("2d") ;
-    
+     binarySymbolCanvas.getContext("2d").scale(0.4, 0.4) ;
 
 	var minima = {"sum":270, "x":0, "y":0 } ;	
 
