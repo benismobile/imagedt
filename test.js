@@ -104,8 +104,6 @@ function blueToBinary(colourCanvas, binaryCanvas)
 {
 
       var binaryContext = binaryCanvas.getContext("2d");
-      binaryContext.scale(0.4, 0.4) ;
-
       var dataitems = ((colourCanvas.width*4) * colourCanvas.height) ;
 
       var context = colourCanvas.getContext("2d") ;
@@ -147,7 +145,9 @@ function blueToBinary(colourCanvas, binaryCanvas)
 
 
 	 binaryContext.putImageData(canvasdata, 0, 0);
-
+     binaryContext.scale(0.4, 0.4) ;
+    
+ 
 
 }
 
