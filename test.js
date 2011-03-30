@@ -160,19 +160,24 @@ function findSymbol(symbolCanvas)
       blueToBinary(symbolCanvas, binarySymbol) ; 
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
-      visualizeDistanceTransform(dT, distanceCanvas) ;
+      visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
       
       
 }
 
 
-function visualizeDistanceTransform(dT, distanceCanvas)
+function visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas)
 {
     
        
    
     var distanceContext = distanceCanvas.getContext("2d") ;
-    var canvasdata = distanceContext.createImageData(256, 256);
+    var context = binaryCanvas.getContext("2d") ;
+    var canvasdata = context.getImageData(0,
+                                0,
+                                canvas.height, canvas.width);
+                                
+    // var canvasdata = distanceContext.createImageData(256, 256);
 
 	var pix = 0 ;
 
