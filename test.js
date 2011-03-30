@@ -156,7 +156,8 @@ function findSymbol(symbolCanvas)
       var searchCanvas = document.getElementById("canvas");
       var binaryCanvas = document.getElementById("binary") ;
       blueToBinary(searchCanvas, binaryCanvas) ;
-      
+      var binarySymbol = document.getElementById("binary_symbol") ;
+      blueToBinary(symbolCanvas, binarySymbol) ; 
 	 
 
 }
