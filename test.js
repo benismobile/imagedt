@@ -172,7 +172,7 @@ function visualizeDistanceTransform(dT, distanceCanvas)
        
    
     var distanceContext = distanceCanvas.getContext("2d") ;
-    var canvasData = distanceContext.createImageData(256, 256);
+    var canvasdata = distanceContext.createImageData(256, 256);
 
 	var pix = 0 ;
 
