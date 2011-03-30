@@ -161,8 +161,68 @@ function findSymbol(symbolCanvas)
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
+      locateSymbol(searchCanvas, distanceCanvas, binarySymbol,dT) ;
       
-      
+}
+
+
+function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
+{
+ 
+    var distanceContext = distanceCanvas.getContext("2d") ;
+    var context = searchCanvas.getContext("2d") ;
+    
+
+	var minima = {"sum":270, "x":0, "y":0 } ;	
+
+	distanceContext.lineWidth = 2;
+	distanceContext.strokeStyle = 'rgb(255,0,0)';
+	distanceContext.fillStyle = 'rgb(255,0,0)';
+	context.lineWidth = 22;
+	context.strokeStyle = 'rgb(255,0,0)';
+	context.fillStyle = 'rgb(255,0,0)';
+
+
+
+	for(var i = 0 ; i < distanceCanvas.height - 20 ; i++)
+	{
+		for(var j = 0 ; j < distanceCanvas.width - 20; j++)
+		{
+			
+			
+			var sumInBox = sumOfDistanceValues(binarySymbolCanvas, dT, j, i, 270) ;
+
+
+
+			if(sumInBox < minima.sum)
+			{
+				minima.sum = sumInBox ;
+				minima.x = j ;
+				minima.y = i ;
+				distanceContext.strokeRect(minima.x,minima.y,20,20) ;
+			//	context.strokeRect(minima.x,minima.y,20,20) ;
+
+
+			}
+		}
+
+	}
+
+	//reset
+	 minima.sum = 270 ; 
+
+	distanceContext.lineWidth = 2;
+	distanceContext.strokeStyle = 'rgb(0,255,0)';
+	distanceContext.fillStyle = 'rgb(0,255,0)';
+	context.lineWidth = 2;
+	context.strokeStyle = 'rgb(0,255,0)';
+	context.fillStyle = 'rgb(0,255,0)';
+	distanceContext.strokeRect(minima.x,minima.y,20,20) ;
+	context.strokeRect(minima.x,minima.y,20,20) ;
+
+	
+ 
+    
 }
 
 
