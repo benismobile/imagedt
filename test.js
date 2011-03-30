@@ -158,9 +158,64 @@ function findSymbol(symbolCanvas)
       blueToBinary(searchCanvas, binaryCanvas) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
       blueToBinary(symbolCanvas, binarySymbol) ; 
-	 
-
+	  var dT = distanceTransform(binaryCanvas) ;
+      var distanceCanvas = document.getElementById("distance") ;
+      visualizeDistanceTransform(dT, distanceCanvas) ;
+      
+      
 }
+
+
+function visualizeDistanceTransform(dT, distanceCanvas)
+{
+    
+   var canvasdata =  context.getImageData(0,
+                                0,
+                                canvas.height, canvas.width);
+
+    var distanceContext = distanceCanvas.getContext("2d") ;
+    var canvasData = context.createImageData(256, 256);
+
+	var pix = 0 ;
+
+	for(var i = 0 ; i < canvas.height ; i ++ )
+      {
+
+	  for(var j = 0 ; j < canvas.width ; j++ )
+	  {
+		var pixVal = 256 ;
+		var distanceVal = dT[i][j] ; 
+
+		if(distanceVal == 12 ) {pixVal = 240 ;} 
+		if(distanceVal == 11 ) {pixVal = 220 ;} 
+		if(distanceVal == 10 ) {pixVal = 200 ;} 
+		if(distanceVal == 9 ) {pixVal = 180 ; } 
+		if(distanceVal == 8 ) {pixVal = 160 ; } 
+		if(distanceVal == 7 ) {pixVal = 140 ; } 
+		if(distanceVal == 6 ) {pixVal = 120 ; } 
+		if(distanceVal == 5 ) {pixVal = 100 ; } 
+		if(distanceVal == 4 ) {pixVal = 80  ; } 
+		if(distanceVal == 3 ) {pixVal =  60 ; } 
+		if(distanceVal == 2 ) {pixVal =  40 ; } 
+		if(distanceVal == 1 ) {pixVal = 20 ; } 
+		if(distanceVal === 0 ) {pixVal = 0 ; } 
+ 
+	
+
+		canvasdata.data[pix] = pixVal  ;
+		canvasdata.data[pix+1] = pixVal ;
+		canvasdata.data[pix+2] = pixVal ;	
+		pix= pix+4 ;
+	   }
+	}
+
+	distanceContext.putImageData(canvasdata, 0, 0);
+ 
+
+ 
+    
+}
+
 
 // calculate which symbol the mouse is currently hovering over
 function calculate(e, canvas, context)
