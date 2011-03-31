@@ -100,7 +100,7 @@ function cacheSymbol(symbol, canvasId, draw)
 }
 
 
-function blueToBinary(colourCanvas, binaryCanvas)
+function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 {
 
       var binaryContext = binaryCanvas.getContext("2d");
@@ -142,12 +142,10 @@ function blueToBinary(colourCanvas, binaryCanvas)
 		}
 	} 
 
-
-
-	// binaryContext.putImageData(canvasdata, 0, 0);
-      binaryContext.fillStyle = '#09F' ;   
-      binaryContext.fillRect(0,0,20,20) ;
- 
+     binaryContext.save();
+     binaryContext.scale(scalefactor,scalefactor) ;
+	 binaryContext.putImageData(canvasdata, 0, 0);
+     binaryContext.restore() ;
 
 }
 
@@ -156,13 +154,12 @@ function findSymbol(symbolCanvas)
     
       var searchCanvas = document.getElementById("canvas");
       var binaryCanvas = document.getElementById("binary") ;
-      blueToBinary(searchCanvas, binaryCanvas) ;
+      blueToBinary(searchCanvas, binaryCanvas, 1) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
-      blueToBinary(symbolCanvas, binarySymbol) ; 
+      blueToBinary(symbolCanvas, binarySymbol, 0.6) ; 
  
       var binaryContext = binarySymbol.getContext("2d") ;
-      binaryContext.scale(0.4, 0.4) ;
-      binaryContext.save() ;
+    
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
@@ -177,8 +174,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
     var distanceContext = distanceCanvas.getContext("2d") ;
     var context = searchCanvas.getContext("2d") ;
     var binaryContext =  binarySymbolCanvas.getContext("2d")
-    binaryContext.save() ; 
-    binaryContext.scale(0.4, 0.4) ;
+
 	var minima = {"sum":270, "x":0, "y":0 } ;	
 
 	distanceContext.lineWidth = 2;
