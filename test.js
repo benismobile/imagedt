@@ -142,7 +142,8 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 		}
 	} 
      var tempCanvas =  document.createElement("canvas");
-     
+     tempCanvas.setAttribute("height", canvasdata.height );
+     tempCanvas.setAttribute("width", canvasdata.width );
      tempCanvas.getContext("2d").putImageData(canvasdata, 0, 0);
 
      binaryContext.save();
@@ -188,7 +189,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 	context.fillStyle = 'rgb(255,0,0)';
 
 
-/*
+
 	for(var i = 0 ; i < distanceCanvas.height - 20 ; i++)
 	{
 		for(var j = 0 ; j < distanceCanvas.width - 20; j++)
@@ -212,7 +213,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 		}
 
 	}
-*/
+
 	//reset
 	 minima.sum = 270 ; 
 
