@@ -145,8 +145,7 @@ function blueToBinary(colourCanvas, binaryCanvas)
 
 
 	 binaryContext.putImageData(canvasdata, 0, 0);
-     binaryContext.scale(0.4, 0.4) ;
-    
+         
  
 
 }
@@ -158,9 +157,10 @@ function findSymbol(symbolCanvas)
       var binaryCanvas = document.getElementById("binary") ;
       blueToBinary(searchCanvas, binaryCanvas) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
-      binarySymbol.getContext("2d").scale(0.4, 0.4) ;
       blueToBinary(symbolCanvas, binarySymbol) ; 
-      
+ 
+      binarySymbol.getContext("2d").scale(0.4, 0.4) ;
+      binarySymbol.getContext("2d").save() ;
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
