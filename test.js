@@ -144,8 +144,9 @@ function blueToBinary(colourCanvas, binaryCanvas)
 
 
 
-	 binaryContext.putImageData(canvasdata, 0, 0);
-         
+	// binaryContext.putImageData(canvasdata, 0, 0);
+      binaryContext.fillStyle = '#09F' ;   
+      binaryContext.fillRect(0,0,20,20) ;
  
 
 }
