@@ -141,10 +141,13 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 
 		}
 	} 
+     var tempCanvas =  document.createElement("canvas");
+     
+     tempCanvas.getContext("2d").putImageData(canvasata, 0, 0);
 
      binaryContext.save();
      binaryContext.scale(scalefactor,scalefactor) ;
-	 binaryContext.putImageData(canvasdata, 0, 0);
+	 binaryContext.drawImage(tempCanvas, 0, 0);
      binaryContext.restore() ;
 
 }
