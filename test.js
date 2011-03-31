@@ -143,7 +143,7 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 	} 
      var tempCanvas =  document.createElement("canvas");
      
-     tempCanvas.getContext("2d").putImageData(canvasata, 0, 0);
+     tempCanvas.getContext("2d").putImageData(canvasdata, 0, 0);
 
      binaryContext.save();
      binaryContext.scale(scalefactor,scalefactor) ;
