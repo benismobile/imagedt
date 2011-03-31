@@ -159,8 +159,9 @@ function findSymbol(symbolCanvas)
       var binarySymbol = document.getElementById("binary_symbol") ;
       blueToBinary(symbolCanvas, binarySymbol) ; 
  
-      binarySymbol.getContext("2d").scale(0.4, 0.4) ;
-      binarySymbol.getContext("2d").save() ;
+      var binaryContext = binarySymbol.getContext("2d") ;
+      binaryContext.scale(0.4, 0.4) ;
+      binaryContext.save() ;
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
@@ -174,8 +175,9 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
  
     var distanceContext = distanceCanvas.getContext("2d") ;
     var context = searchCanvas.getContext("2d") ;
-     binarySymbolCanvas.getContext("2d").scale(0.4, 0.4) ;
-
+    var binaryContext =  binarySymbolCanvas.getContext("2d")
+    binaryContext.save() ; 
+    binaryContext.scale(0.4, 0.4) ;
 	var minima = {"sum":270, "x":0, "y":0 } ;	
 
 	distanceContext.lineWidth = 2;
@@ -186,7 +188,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 	context.fillStyle = 'rgb(255,0,0)';
 
 
-
+/*
 	for(var i = 0 ; i < distanceCanvas.height - 20 ; i++)
 	{
 		for(var j = 0 ; j < distanceCanvas.width - 20; j++)
@@ -210,7 +212,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 		}
 
 	}
-
+*/
 	//reset
 	 minima.sum = 270 ; 
 
