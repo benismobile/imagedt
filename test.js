@@ -164,7 +164,7 @@ function findSymbol(symbolCanvas)
       blueToBinary(searchCanvas, binaryCanvas, 1) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
       
-      var scalingfactor = 0.55 ; 
+      var scalefactor = 0.55 ; 
       var scaleheight = Math.ceil(binarySymbol.getAttribute("height") * scalefactor) ;
       var scalewidth = Math.ceil(binarySymbol.getAttribute("width") * scalefactor) ;
  
