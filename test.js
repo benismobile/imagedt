@@ -104,12 +104,7 @@ function cacheSymbol(symbol, canvasId, draw)
 function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 {
 
-      var scaleheight = Math.ceil(binaryCanvas.getAttribute("height") * scalefactor) ;
-      var scalewidth = Math.ceil(binaryCanvas.getAttribute("width") * scalefactor) ;
- 
-      binaryCanvas.setAttribute("height", scaleheight  );
-      binaryCanvas.setAttribute("width", scalewidth  );
-
+     
       var binaryContext = binaryCanvas.getContext("2d");
       var dataitems = ((colourCanvas.width*4) * colourCanvas.height) ;
 
@@ -129,7 +124,7 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 		red = 81 ;
 		green = 169 ;
 		blue = 220 ;		
-		var error = 85 ;
+		var error = 65 ;
 
 		if( (red < r-error || red > r+error ||
 		    green < g-error || green > g+error || 
@@ -168,15 +163,23 @@ function findSymbol(symbolCanvas)
       var binaryCanvas = document.getElementById("binary") ;
       blueToBinary(searchCanvas, binaryCanvas, 1) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
-      var scalingfactor = 0.7 ;
-      blueToBinary(symbolCanvas, binarySymbol, scalingfactor) ; 
+      
+      var scalingfactor = 0.55 ; 
+      var scaleheight = Math.ceil(binarySymbol.getAttribute("height") * scalefactor) ;
+      var scalewidth = Math.ceil(binarySymbol.getAttribute("width") * scalefactor) ;
+ 
+      binarySymbol.setAttribute("height", scaleheight  );
+      binarySymbol.setAttribute("width", scalewidth  );
+
+     
+     blueToBinary(symbolCanvas, binarySymbol, scalingfactor) ; 
  
       var binaryContext = binarySymbol.getContext("2d") ;
     
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
-      var min = 80 ;
+      var min = 250 ;
       locateSymbol(searchCanvas, distanceCanvas, binarySymbol,dT, min) ;
       
       binarySymbol.setAttribute("height", 30  );
