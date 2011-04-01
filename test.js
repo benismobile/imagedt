@@ -172,7 +172,7 @@ function findSymbol(symbolCanvas)
       binarySymbol.setAttribute("width", scalewidth  );
 
      
-     blueToBinary(symbolCanvas, binarySymbol, scalingfactor) ; 
+     blueToBinary(symbolCanvas, binarySymbol, scalefactor) ; 
  
       var binaryContext = binarySymbol.getContext("2d") ;
     
