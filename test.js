@@ -103,6 +103,12 @@ function cacheSymbol(symbol, canvasId, draw)
 function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 {
 
+      var scaleheight = Math.roundup(binaryCanvas.getAttribute("height") * scalefactor) ;
+      var scalewidth = Math.roundup(binaryCanvas.getAttribute("width") * scalefactor) ;
+ 
+      binaryCanvas.setAttribute("height", scaleheight  );
+      binaryCanvas.setAttribute("width", scalewidth  );
+
       var binaryContext = binaryCanvas.getContext("2d");
       var dataitems = ((colourCanvas.width*4) * colourCanvas.height) ;
 
@@ -116,7 +122,7 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
       for(var pix = 0; pix < dataitems -1 ; pix = pix + 4)
       {
         
-    	var r = canvasdata.data[pix] ;
+        var r = canvasdata.data[pix] ;
 		var g = canvasdata.data[pix+1] ;
 		var b = canvasdata.data[pix+2] ;
 		red = 81 ;
@@ -147,6 +153,7 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
      tempCanvas.getContext("2d").putImageData(canvasdata, 0, 0);
 
      binaryContext.save();
+     
      binaryContext.scale(scalefactor,scalefactor) ;
 	 binaryContext.drawImage(tempCanvas, 0, 0);
      binaryContext.restore() ;
@@ -190,9 +197,9 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 
 
 
-	for(var i = 0 ; i < distanceCanvas.height - 20 ; i++)
+	for(var i = 0 ; i < distanceCanvas.height - binarySymbolCanvas.height ; i++)
 	{
-		for(var j = 0 ; j < distanceCanvas.width - 20; j++)
+		for(var j = 0 ; j < distanceCanvas.width - binarySymbolCanvas.width; j++)
 		{
 			
 			
@@ -205,7 +212,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 				minima.sum = sumInBox ;
 				minima.x = j ;
 				minima.y = i ;
-				distanceContext.strokeRect(minima.x,minima.y,20,20) ;
+				distanceContext.strokeRect(minima.x,minima.y,binarySymbolCanvas.width,binarySymbolCanvas.height) ;
 			//	context.strokeRect(minima.x,minima.y,20,20) ;
 
 
