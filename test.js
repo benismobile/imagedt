@@ -101,10 +101,9 @@ function cacheSymbol(symbol, canvasId, draw)
 }
 
 
-function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
+function blueToBinary(colourCanvas, binaryCanvas)
 {
 
-     
       var binaryContext = binaryCanvas.getContext("2d");
       var dataitems = ((colourCanvas.width*4) * colourCanvas.height) ;
 
@@ -143,17 +142,31 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 
 		}
 	} 
+     
+     binaryContext.putImageData(canvasdata, 0, 0);
+
+}
+
+function rescaleCanvas(originalCanvas, scalefactor)
+{
+ 
+      var context = originalCanvas.getContext("2d") ;
+      
+      var canvasdata =  context.getImageData(0,
+                                0,
+                                originalCanvas.height, originalCanvas.width);
+
      var tempCanvas =  document.createElement("canvas");
      tempCanvas.setAttribute("height", canvasdata.height );
      tempCanvas.setAttribute("width", canvasdata.width );
      tempCanvas.getContext("2d").putImageData(canvasdata, 0, 0);
 
-     binaryContext.save();
+     context.save();
      
-     binaryContext.scale(scalefactor,scalefactor) ;
-	 binaryContext.drawImage(tempCanvas, 0, 0);
-     binaryContext.restore() ;
-
+     context.scale(scalefactor,scalefactor) ;
+     context.drawImage(tempCanvas, 0, 0);
+     context.restore() ;
+    
 }
 
 function findSymbol(symbolCanvas)
@@ -161,7 +174,7 @@ function findSymbol(symbolCanvas)
     
       var searchCanvas = document.getElementById("canvas");
       var binaryCanvas = document.getElementById("binary") ;
-      blueToBinary(searchCanvas, binaryCanvas, 1) ;
+      blueToBinary(searchCanvas, binaryCanvas) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
       
       var scalefactor = 0.55 ; 
@@ -172,7 +185,10 @@ function findSymbol(symbolCanvas)
       binarySymbol.setAttribute("width", scalewidth  );
 
      
-     blueToBinary(symbolCanvas, binarySymbol, scalefactor) ; 
+      rescaleCanvas(symbolCanvas, scalefactor) ;
+      rescaleCanvas(binarySymbol, scalefactor) ;
+      
+      blueToBinary(symbolCanvas, binarySymbol) ; 
  
       var binaryContext = binarySymbol.getContext("2d") ;
     
