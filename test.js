@@ -89,6 +89,7 @@ function cacheSymbol(symbol, canvasId, draw)
         var img = new Image();
         img.src = symbol.image;
         context.drawImage(img, 0, 0);
+        
         canvas.onmousedown = function(e)
         {
            findSymbol(canvas);
@@ -174,7 +175,8 @@ function findSymbol(symbolCanvas)
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
-      locateSymbol(searchCanvas, distanceCanvas, binarySymbol,dT) ;
+      var min = 80 ;
+      locateSymbol(searchCanvas, distanceCanvas, binarySymbol,dT, min) ;
       
       binarySymbol.setAttribute("height", 30  );
       binarySymbol.setAttribute("width", 30  );
@@ -183,14 +185,14 @@ function findSymbol(symbolCanvas)
 }
 
 
-function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
+function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT, minimum)
 {
  
     var distanceContext = distanceCanvas.getContext("2d") ;
     var context = searchCanvas.getContext("2d") ;
     var binaryContext =  binarySymbolCanvas.getContext("2d") ;
 
-	var minima = {"sum":50, "x":0, "y":0 } ;	
+	var minima = {"sum": minimum, "x":0, "y":0 } ;	
 
 	distanceContext.lineWidth = 2;
 	distanceContext.strokeStyle = 'rgb(255,0,0)';
@@ -207,7 +209,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 		{
 			
 			
-			var sumInBox = sumOfDistanceValues(binarySymbolCanvas, dT, j, i, 50) ;
+			var sumInBox = sumOfDistanceValues(binarySymbolCanvas, dT, j, i, minimum) ;
 
 
 			if(sumInBox < minima.sum)
@@ -225,7 +227,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 	}
 
 	//reset
-	 minima.sum = 50 ; 
+	 minima.sum = minimum ; 
 
 	distanceContext.lineWidth = 2;
 	distanceContext.strokeStyle = 'rgb(0,255,0)';
@@ -295,275 +297,6 @@ function visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas)
     
 }
 
-
-// calculate which symbol the mouse is currently hovering over
-function calculate(e, canvas, context)
-{
-    var xy = getxy(e, canvas);    
-    var pixdata = getPixelDataFromXY(xy.x, xy.y, context);
-
-	
-
-     if(pixdata != null)
-      {
-	  var red = pixdata.data[0] ;
-	  var green = pixdata.data[1] ;
-	  var blue = pixdata.data[2] ;
-
-        document.getElementById("R").firstChild.nodeValue =  red ;
-        document.getElementById("G").firstChild.nodeValue =  green ;
-        document.getElementById("B").firstChild.nodeValue =  blue ;
-
-	  var canvasdata =  context.getImageData(0,
-                                0,
-                                canvas.height, canvas.width);
-
-	 
- 	 var binaryContext = document.getElementById("binary").getContext("2d");
-	 
-
-	var dataitems = ((canvas.width*4) * canvas.height) ;
-
-	for(var pix = 0; pix < dataitems -1 ; pix = pix + 4)
-      {
-        
-		var r = canvasdata.data[pix] ;
-		var g = canvasdata.data[pix+1] ;
-		var b = canvasdata.data[pix+2] ;
-		red = 81 ;
-		green = 169 ;
-		blue = 220 ;		
-		var error = 85 ;
-
-		if( (red < r-error || red > r+error ||
-		    green < g-error || green > g+error || 
-		   blue < b-error || blue > b+error ) )
-		{
-			 canvasdata.data[pix] = 255 ;
-			 canvasdata.data[pix+1] = 255 ;
-			canvasdata.data[pix+2] = 255 ;	
-					 
-		}
-		else
-		{
-			canvasdata.data[pix] = 0 ;
-			canvasdata.data[pix+1] = 0 ;
-			canvasdata.data[pix+2] = 0 ;	
-
-		}
-	} 
-
-
-
-	 binaryContext.putImageData(canvasdata, 0, 0);
-
-	
-
-		
-
-
-	}
-
-	var binaryCanvas = document.getElementById("binary") ;
-
-	var dT = distanceTransform(binaryCanvas) ;
-
-	var distanceCanvas = document.getElementById("distance") ;
-	var distanceContext = distanceCanvas.getContext("2d") ;
-
-	var pix = 0 ;
-
-	for(var i = 0 ; i < canvas.height ; i ++ )
-      {
-
-	  for(var j = 0 ; j < canvas.width ; j++ )
-	  {
-		var pixVal = 256 ;
-		var distanceVal = dT[i][j] ; 
-
-		if(distanceVal == 12 ) {pixVal = 240 } ;
-		if(distanceVal == 11 ) {pixVal = 220 } ;
-		if(distanceVal == 10 ) {pixVal = 200 } ;
-		if(distanceVal == 9 ) {pixVal = 180 } ;
-		if(distanceVal == 8 ) {pixVal = 160 } ;
-		if(distanceVal == 7 ) {pixVal = 140 } ;
-		if(distanceVal == 6 ) {pixVal = 120 } ;
-		if(distanceVal == 5 ) {pixVal = 100 } ;
-		if(distanceVal == 4 ) {pixVal = 80 } ;
-		if(distanceVal == 3 ) {pixVal =  60 } ;
-		if(distanceVal == 2 ) {pixVal =  40 } ;
-		if(distanceVal == 1 ) {pixVal = 20 } ;
-		if(distanceVal == 0 ) {pixVal = 0 } ;
- 
-	
-
-		canvasdata.data[pix] = pixVal  ;
-		canvasdata.data[pix+1] = pixVal ;
-		canvasdata.data[pix+2] = pixVal ;	
-		pix= pix+4 ;
-	   }
-	}
-
-	distanceContext.putImageData(canvasdata, 0, 0);
- 
-
-	var refimg = new Image() ;
-	refimg.src =  "http://dlib-rainbow.ucs.ed.ac.uk/imagedt/images/info.png" ;	
-//	refimg.src =  "http://dlib-rainbow.ucs.ed.ac.uk/imagedt/images/parking.png" ;	
-
-//	refimg.src =  "http://dlib-rainbow.ucs.ed.ac.uk/imagedt/images/star.png" ;	
-//	refimg.src =  "http://dlib-rainbow.ucs.ed.ac.uk/imagedt/images/manor_house.png" ; 
-//	refimg.src =  "http://dlib-rainbow.ucs.ed.ac.uk/imagedt/images/info_seasonal.png" ; 
-//	refimg.src =  "http://dlib-rainbow.ucs.ed.ac.uk/imagedt/images/golf.png" ; 
-//	refimg.src =  "http://dlib-rainbow.ucs.ed.ac.uk/imagedt/images/country_park.png" ; 
-
-	var red = 81 ;
-	var green = 169 ;
-	var blue = 220 ;		
-	var binaryRefImageCanvas = convertToBinary(refimg , red, green, blue, 85) ;
-	
-
-
-	
-
-	var minima = {"sum":270, "x":0, "y":0 } ;	
-
-	distanceContext.lineWidth = 2;
-	distanceContext.strokeStyle = 'rgb(255,0,0)';
-	distanceContext.fillStyle = 'rgb(255,0,0)';
-	context.lineWidth = 22;
-	context.strokeStyle = 'rgb(255,0,0)';
-	context.fillStyle = 'rgb(255,0,0)';
-
-
-
-	for(var i = 0 ; i < distanceCanvas.height - 20 ; i++)
-	{
-		for(var j = 0 ; j < distanceCanvas.width - 20; j++)
-		{
-			
-			
-
-
-			var sumInBox = sumOfDistanceValues(binaryRefImageCanvas, dT, j, i, 270) ;
-
-
-
-			if(sumInBox < minima.sum)
-			{
-				minima.sum = sumInBox ;
-				minima.x = j ;
-				minima.y = i ;
-				distanceContext.strokeRect(minima.x,minima.y,20,20) ;
-			//	context.strokeRect(minima.x,minima.y,20,20) ;
-
-
-			}
-		}
-
-	}
-
-	//reset
-	 minima.sum = 270 ; 
-
-	distanceContext.lineWidth = 2;
-	distanceContext.strokeStyle = 'rgb(0,255,0)';
-	distanceContext.fillStyle = 'rgb(0,255,0)';
-	context.lineWidth = 2;
-	context.strokeStyle = 'rgb(0,255,0)';
-	context.fillStyle = 'rgb(0,255,0)';
-	distanceContext.strokeRect(minima.x,minima.y,20,20) ;
-	context.strokeRect(minima.x,minima.y,20,20) ;
-
-	
-	
-
-    	var data = getDataFromXY(xy.x, xy.y, context);
-    	var hit = null;
-
-    if(data != null)
-    {
-        var hist = calculateHist(data.data);    
-        hit = getBestHit(hist, false);
-
-        addHistToPage("Current", hist, 'current-row');
-
-        /*if(hit != null)
-        {
-            console.log("=> %d : %d", hit.edgesDiff, hit.edgesDist);
-            }*/
-
-        // update stats
-        updateTables(hit, hist, diffs);
-
-        // update current viewer
-        currentContext.putImageData(data, 0, 0);
-    }
-    
-    return hit;
-}
-
-function convertToBinary(colourImg, red, green, blue, error)
-{
-
-	var canvas = document.createElement("canvas") ;
-	canvas.width = 20 ;
-	canvas.height = 20 ;
-	var context = canvas.getContext("2d") ;
-	var viewpoints = document.getElementById("view-points") ;
-	viewpoints.appendChild(	canvas) ;
-
-
- 
-	context.drawImage(colourImg,0 ,0) ;
-
-
-	
-	var dataitems = ((canvas.width*4) * canvas.height) ;
-
-	var canvasdata =  context.getImageData(0,
-                                0,
-                                canvas.height, canvas.width);
-
-	
-
-
-
-	for(var pix = 0; pix < dataitems -1 ; pix = pix + 4)
-      {
-        
-		var r = canvasdata.data[pix] ;
-		var g = canvasdata.data[pix+1] ;
-		var b = canvasdata.data[pix+2] ;
-		
-
-
-		if( (red < r-error || red > r+error ||
-		    green < g-error || green > g+error || 
-		   blue < b-error || blue > b+error ) )
-		{
-			 canvasdata.data[pix] = 256 ;
-			 canvasdata.data[pix+1] = 256 ;
-			canvasdata.data[pix+2] = 256 ;	
-					 
-		}
-		else
-		{
-			canvasdata.data[pix] = 0 ;
-			canvasdata.data[pix+1] = 0 ;
-			canvasdata.data[pix+2] = 0 ;	
-
-		}
-	} 
-
-
-
-	context.putImageData(canvasdata, 0, 0);
-	
-
-	return canvas ;
-
-}
 
 
 
