@@ -123,7 +123,7 @@ function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
       {
         
         var r = canvasdata.data[pix] ;
-		var g = canvasdata.data[pix+1] ;
+    	var g = canvasdata.data[pix+1] ;
 		var b = canvasdata.data[pix+2] ;
 		red = 81 ;
 		green = 169 ;
@@ -176,6 +176,10 @@ function findSymbol(symbolCanvas)
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
       locateSymbol(searchCanvas, distanceCanvas, binarySymbol,dT) ;
       
+      binaryCanvas.setAttribute("height", 30  );
+      binaryCanvas.setAttribute("width", 30  );
+
+      
 }
 
 
@@ -184,9 +188,9 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
  
     var distanceContext = distanceCanvas.getContext("2d") ;
     var context = searchCanvas.getContext("2d") ;
-    var binaryContext =  binarySymbolCanvas.getContext("2d")
+    var binaryContext =  binarySymbolCanvas.getContext("2d") ;
 
-	var minima = {"sum":270, "x":0, "y":0 } ;	
+	var minima = {"sum":100, "x":0, "y":0 } ;	
 
 	distanceContext.lineWidth = 2;
 	distanceContext.strokeStyle = 'rgb(255,0,0)';
@@ -203,8 +207,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 		{
 			
 			
-			var sumInBox = sumOfDistanceValues(binarySymbolCanvas, dT, j, i, 270) ;
-
+			var sumInBox = sumOfDistanceValues(binarySymbolCanvas, dT, j, i, 100) ;
 
 
 			if(sumInBox < minima.sum)
@@ -222,7 +225,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 	}
 
 	//reset
-	 minima.sum = 270 ; 
+	 minima.sum = 100 ; 
 
 	distanceContext.lineWidth = 2;
 	distanceContext.strokeStyle = 'rgb(0,255,0)';
@@ -230,8 +233,8 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 	context.lineWidth = 2;
 	context.strokeStyle = 'rgb(0,255,0)';
 	context.fillStyle = 'rgb(0,255,0)';
-	distanceContext.strokeRect(minima.x,minima.y,20,20) ;
-	context.strokeRect(minima.x,minima.y,20,20) ;
+	distanceContext.strokeRect(minima.x,minima.y,binarySymbolCanvas.width,binarySymbolCanvas.height) ;
+	context.strokeRect(minima.x,minima.y,binarySymbolCanvas.width,binarySymbolCanvas.height) ;
 
 	
  
