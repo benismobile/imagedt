@@ -89,7 +89,7 @@ function cacheSymbol(symbol, canvasId, draw)
         var img = new Image();
         img.src = symbol.image;
         context.drawImage(img, 0, 0);
-        canvas.onmousemove = function(e)
+        canvas.onmousedown = function(e)
         {
            findSymbol(canvas);
         };
@@ -167,7 +167,7 @@ function findSymbol(symbolCanvas)
       var binaryCanvas = document.getElementById("binary") ;
       blueToBinary(searchCanvas, binaryCanvas, 1) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
-      blueToBinary(symbolCanvas, binarySymbol, 0.6) ; 
+      blueToBinary(symbolCanvas, binarySymbol, 0.75) ; 
  
       var binaryContext = binarySymbol.getContext("2d") ;
     
@@ -176,8 +176,8 @@ function findSymbol(symbolCanvas)
       visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
       locateSymbol(searchCanvas, distanceCanvas, binarySymbol,dT) ;
       
-      binaryCanvas.setAttribute("height", 30  );
-      binaryCanvas.setAttribute("width", 30  );
+      binarySymbol.setAttribute("height", 30  );
+      binarySymbol.setAttribute("width", 30  );
 
       
 }
@@ -190,7 +190,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
     var context = searchCanvas.getContext("2d") ;
     var binaryContext =  binarySymbolCanvas.getContext("2d") ;
 
-	var minima = {"sum":100, "x":0, "y":0 } ;	
+	var minima = {"sum":50, "x":0, "y":0 } ;	
 
 	distanceContext.lineWidth = 2;
 	distanceContext.strokeStyle = 'rgb(255,0,0)';
@@ -207,7 +207,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 		{
 			
 			
-			var sumInBox = sumOfDistanceValues(binarySymbolCanvas, dT, j, i, 100) ;
+			var sumInBox = sumOfDistanceValues(binarySymbolCanvas, dT, j, i, 50) ;
 
 
 			if(sumInBox < minima.sum)
@@ -225,7 +225,7 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT)
 	}
 
 	//reset
-	 minima.sum = 100 ; 
+	 minima.sum = 50 ; 
 
 	distanceContext.lineWidth = 2;
 	distanceContext.strokeStyle = 'rgb(0,255,0)';
