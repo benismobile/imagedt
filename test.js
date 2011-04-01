@@ -177,7 +177,7 @@ function findSymbol(symbolCanvas)
       blueToBinary(searchCanvas, binaryCanvas) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
       var colourSymbol = document.getElementById("colour_symbol") ;
-      colourSymbol.getContext("2d").drawImage(searchCanvas) ;
+      colourSymbol.getContext("2d").drawImage(symbolCanvas, 0, 0) ;
   
       var scalefactor = 0.55 ; 
       var scaleheight = Math.ceil(binarySymbol.getAttribute("height") * scalefactor) ;
