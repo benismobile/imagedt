@@ -103,8 +103,8 @@ function cacheSymbol(symbol, canvasId, draw)
 function blueToBinary(colourCanvas, binaryCanvas, scalefactor)
 {
 
-      var scaleheight = Math.roundup(binaryCanvas.getAttribute("height") * scalefactor) ;
-      var scalewidth = Math.roundup(binaryCanvas.getAttribute("width") * scalefactor) ;
+      var scaleheight = Math.ceil(binaryCanvas.getAttribute("height") * scalefactor) ;
+      var scalewidth = Math.ceil(binaryCanvas.getAttribute("width") * scalefactor) ;
  
       binaryCanvas.setAttribute("height", scaleheight  );
       binaryCanvas.setAttribute("width", scalewidth  );
