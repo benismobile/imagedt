@@ -168,7 +168,8 @@ function findSymbol(symbolCanvas)
       var binaryCanvas = document.getElementById("binary") ;
       blueToBinary(searchCanvas, binaryCanvas, 1) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
-      blueToBinary(symbolCanvas, binarySymbol, 0.75) ; 
+      var scalingfactor = 0.7 ;
+      blueToBinary(symbolCanvas, binarySymbol, scalingfactor) ; 
  
       var binaryContext = binarySymbol.getContext("2d") ;
     
