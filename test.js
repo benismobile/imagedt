@@ -47,16 +47,16 @@ function init()
 {
     // main map
     var img = new Image();
-    img.src = "./images/osmap3.png";
-    var canvas = document.getElementById("canvas");
+    img.src = "http://c9.io/benismobile/imagedt/workspace/images/osmap3.png";
+    var canvas = document.getElementById("canvas1");
     var canvasContext = canvas.getContext("2d");
-    try{canvasContext.drawImage(img, 0, 0);}catch(error){alert(error.msg) ; }
+    canvasContext.drawImage(img, 0, 0);
 
     // cache symbols
-     cacheSymbols(1);
+  //   cacheSymbols(1);
    
     // current selection viewers
-    currentContext =     document.getElementById("canvas-current").getContext("2d");
+  //  currentContext =     document.getElementById("canvas-current").getContext("2d");
 
   //  canvas.onmousemove = function(e)
 //    {
@@ -73,6 +73,8 @@ function cacheSymbols(draw)
 
     for(var symbol in symbolMap)
     {
+
+{
         cacheSymbol(symbolMap[symbol], canvas + num, draw);
         ++num;
     }
@@ -156,16 +158,22 @@ function rescaleCanvas(originalCanvas, scalefactor)
                                 0,
                                 originalCanvas.height, originalCanvas.width);
 
+      var scaleheight = Math.ceil(originalCanvas.getAttribute("height") * scalefactor) ;
+      var scalewidth = Math.ceil(originalCanvas.getAttribute("width") * scalefactor) ;
+ 
+      originalCanvas.setAttribute("height", scaleheight  );
+      originalCanvas.setAttribute("width", scalewidth  );
+
+
      var tempCanvas =  document.createElement("canvas");
      tempCanvas.setAttribute("height", canvasdata.height );
      tempCanvas.setAttribute("width", canvasdata.width );
      tempCanvas.getContext("2d").putImageData(canvasdata, 0, 0);
 
-     context.save();
      
      context.scale(scalefactor,scalefactor) ;
      context.drawImage(tempCanvas, 0, 0);
-     context.restore() ;
+     
     
 }
 
@@ -179,13 +187,10 @@ function findSymbol(symbolCanvas)
       var colourSymbol = document.getElementById("colour_symbol") ;
       colourSymbol.getContext("2d").drawImage(symbolCanvas, 0, 0) ;
   
-      var scalefactor = 0.55 ; 
-      var scaleheight = Math.ceil(binarySymbol.getAttribute("height") * scalefactor) ;
-      var scalewidth = Math.ceil(binarySymbol.getAttribute("width") * scalefactor) ;
- 
-      binarySymbol.setAttribute("height", scaleheight  );
-      binarySymbol.setAttribute("width", scalewidth  );
-
+      var scalefactor = 0.65 ; 
+      
+      
+      
      
       rescaleCanvas(colourSymbol, scalefactor) ;
       rescaleCanvas(binarySymbol, scalefactor) ;
@@ -665,4 +670,5 @@ function getpos(o)
 	}
 
 	return { x:x, y:y }
+}
 }
