@@ -22,7 +22,7 @@ var star          = new Symbol("Other tourist attraction", "strategi_ti_other_to
 var parking       = new Symbol("Park and ride",            "strategi_ti_PnR.png");
 var info_seasonal = new Symbol("Information centre(s)",    "strategi_ti_info-c_sznl.png");
 
-var symbolMap = new Array();
+var symbolMap = [] ;
 symbolMap[house.name]          = house;
 symbolMap[garden.name]        = garden;
 symbolMap[info.name]           = info;
@@ -33,36 +33,34 @@ symbolMap[parking.name]        = parking;
 symbolMap[info_seasonal.name]  = info_seasonal;
 
 
-var diffs = null;
+
 var currentContext = null;
 
-// dummy firebug functions
-if(!("console" in window)) 
-    window.console = {
-        log: function() {},
-        time: function(arg) {},
-        timeEnd: function(arg) {}};
 
 function init()
 {
     // main map
     var img = new Image();
-    img.src = "http://c9.io/benismobile/imagedt/workspace/images/osmap3.png";
-    var canvas = document.getElementById("canvas1");
-    var canvasContext = canvas.getContext("2d");
-    canvasContext.drawImage(img, 0, 0);
+    img.src = "images/osmap.png";
+    img.onload = function() { 
+        
+        var canvas = document.getElementById("canvas1");
+        var canvasContext = canvas.getContext("2d");
+        canvasContext.drawImage(img, 0, 0);
 
-    // cache symbols
-  //   cacheSymbols(1);
+    };
+  
+
+     // cache symbols
+        cacheSymbols(1);
    
-    // current selection viewers
-  //  currentContext =     document.getElementById("canvas-current").getContext("2d");
-
-  //  canvas.onmousemove = function(e)
-//    {
-  //      calculate(e, canvas, canvasContext, diffs);
-  //  };
+        // current selection viewers
+        currentContext =     document.getElementById("canvas-current").getContext("2d");
+  
 }
+
+    
+    
 
 // cache all symbols
 function cacheSymbols(draw)
@@ -74,7 +72,6 @@ function cacheSymbols(draw)
     for(var symbol in symbolMap)
     {
 
-{
         cacheSymbol(symbolMap[symbol], canvas + num, draw);
         ++num;
     }
@@ -90,9 +87,14 @@ function cacheSymbol(symbol, canvasId, draw)
     {
         var img = new Image();
         img.src = symbol.image;
-        context.drawImage(img, 0, 0);
         
-        canvas.onmousedown = function(e)
+        img.onload = function() {
+            
+            context.drawImage(img, 0, 0);
+                
+        };
+        
+        canvas.onmousedown = function()
         {
            findSymbol(canvas);
         };
@@ -120,11 +122,11 @@ function blueToBinary(colourCanvas, binaryCanvas)
       {
         
         var r = canvasdata.data[pix] ;
-    	var g = canvasdata.data[pix+1] ;
+        var g = canvasdata.data[pix+1] ;
 		var b = canvasdata.data[pix+2] ;
-		red = 81 ;
-		green = 169 ;
-		blue = 220 ;		
+		var red = 81 ;
+		var green = 169 ;
+		var blue = 220 ;		
 		var error = 65 ;
 
 		if( (red < r-error || red > r+error ||
@@ -180,29 +182,28 @@ function rescaleCanvas(originalCanvas, scalefactor)
 function findSymbol(symbolCanvas)
 {
     
-      var searchCanvas = document.getElementById("canvas");
+      var searchCanvas = document.getElementById("canvas1");
       var binaryCanvas = document.getElementById("binary") ;
-      blueToBinary(searchCanvas, binaryCanvas) ;
       var binarySymbol = document.getElementById("binary_symbol") ;
-      var colourSymbol = document.getElementById("colour_symbol") ;
-      colourSymbol.getContext("2d").drawImage(symbolCanvas, 0, 0) ;
-  
+      var colourSymbol = document.getElementById("colour_symbol") ; 
       var scalefactor = 0.65 ; 
       
-      
-      
-     
+ 
+      blueToBinary(searchCanvas, binaryCanvas) ;
+      colourSymbol.getContext("2d").drawImage(symbolCanvas, 0, 0) ;
+ 
+           
       rescaleCanvas(colourSymbol, scalefactor) ;
       rescaleCanvas(binarySymbol, scalefactor) ;
       
       blueToBinary(symbolCanvas, binarySymbol) ; 
  
-      var binaryContext = binarySymbol.getContext("2d") ;
     
 	  var dT = distanceTransform(binaryCanvas) ;
       var distanceCanvas = document.getElementById("distance") ;
-      visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
       var min = 250 ;
+      
+      visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas) ;
       locateSymbol(searchCanvas, distanceCanvas, binarySymbol,dT, min) ;
       
       binarySymbol.setAttribute("height", 30  );
@@ -217,7 +218,6 @@ function locateSymbol(searchCanvas, distanceCanvas, binarySymbolCanvas, dT, mini
  
     var distanceContext = distanceCanvas.getContext("2d") ;
     var context = searchCanvas.getContext("2d") ;
-    var binaryContext =  binarySymbolCanvas.getContext("2d") ;
 
 	var minima = {"sum": minimum, "x":0, "y":0 } ;	
 
@@ -280,16 +280,16 @@ function visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas)
     var context = binaryCanvas.getContext("2d") ;
     var canvasdata = context.getImageData(0,
                                 0,
-                                canvas.height, canvas.width);
+                                binaryCanvas.height, binaryCanvas.width);
                                 
     // var canvasdata = distanceContext.createImageData(256, 256);
 
 	var pix = 0 ;
 
-	for(var i = 0 ; i < canvas.height ; i ++ )
+	for(var i = 0 ; i < binaryCanvas.height ; i ++ )
       {
 
-	  for(var j = 0 ; j < canvas.width ; j++ )
+	  for(var j = 0 ; j < binaryCanvas.width ; j++ )
 	  {
 		var pixVal = 256 ;
 		var distanceVal = dT[i][j] ; 
@@ -327,13 +327,13 @@ function visualizeDistanceTransform(dT, binaryCanvas, distanceCanvas)
 
 
 
-function sumOfDistanceValues(refImageCanvas, distanceTransform, x, y, minimum)
+function sumOfDistanceValues(refImageCanvas, distanceTransform, x, y)
 {
  
 	var refImageCtx = refImageCanvas.getContext("2d") ;	
 	var refImgData = refImageCtx.getImageData(0,0,refImageCanvas.width, refImageCanvas.height) ;
 	var sumOfDistances = 0 ;
-	var sumOfForegroundPixels = 0 ;
+	
 	var sumOfForegroundColPixels = new Array(refImageCanvas.width)  ;
 	var sumOfForegroundRowPixels = new Array(refImageCanvas.height) ;
 	var sumOfDistancesColPixels = new Array(refImageCanvas.width) ;
@@ -669,6 +669,5 @@ function getpos(o)
 		}
 	}
 
-	return { x:x, y:y }
-}
+	return { x:x, y:y } ;
 }
